@@ -35,20 +35,25 @@ R <- as.matrix(data[c(t.start:t.end),2:45], # exclude financials
 R <- R - data[c(t.start:t.end), 56] # subtract RF
 dim(R); colnames(R)
 #
-# factors: F1 for one factor, F3 for three-factor
+# factors
 F1 <- as.matrix(data[c(t.start:t.end),51],
                 nrow = t.end - t.start + 1,
                 ncol = 1)
 colnames(F1) <- colnames(data)[51]
+dim(F1); colnames(F1)
 F3 <- as.matrix(data[c(t.start:t.end),51:53],
                 nrow = t.end - t.start + 1,
                 ncol = 3)
+dim(F3); colnames(F3)
+F4 <- as.matrix(data[c(t.start:t.end),c(51:53, 61)],
+                nrow = t.end - t.start + 1,
+                ncol = 4)
+dim(F4); colnames(F4)
 F5 <- as.matrix(data[c(t.start:t.end),51:55],
                 nrow = t.end - t.start + 1,
                 ncol = 5)
+dim(F5); colnames(F5)
 #
 # counters
 nb.obs <- as.numeric(dim(R)[1])
 nb.port<- as.numeric(dim(R)[2])
-
-
