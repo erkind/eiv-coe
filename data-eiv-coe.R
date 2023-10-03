@@ -45,7 +45,3 @@ F4 <- as.matrix(data[c(t.start:t.end),c(51:53, 61)],
 F5 <- as.matrix(data[c(t.start:t.end),51:55],
                 nrow = t.end - t.start + 1,
                 ncol = 5)
-#
-# counters
-nb.obs <- as.numeric(dim(R)[1])
-nb.port<- as.numeric(dim(R)[2])
