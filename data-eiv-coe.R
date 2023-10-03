@@ -4,21 +4,17 @@
 # data <- read.csv(
 #    paste(
 #       "c:/users/68596/",
-#       "dropbox/eiv-coe/data/",
+#       "Dropbox/eiv-coe/data/",
 #       "data-eiv-coe.csv",
-#       sep = ""
-#       ),
-#    header = t
-# )
+#       sep = ""),
+#    header = TRUE)
 # loading from GitHub
 data <- read.csv(
    paste(
       "http://raw.githubusercontent.com/erkind/",
       "eiv-coe/main/data-eiv-coe.csv",
-      sep = ""
-   ),
-   header = T
-)
+      sep = ""),
+   header = TRUE)
 dim(data)
 colnames(data)
 head(data[c(1:3,51:53,57:59)], n = 2)
