@@ -288,13 +288,12 @@ for(i in 1:nb.port){
    colnames(M5.LS.res) <- colnames(R)
 }
 
-# exports ---------------------------------------------------------------------
-# merge ind.names and output
+# collect results
 M1.LS <- cbind(colnames(R), do.call(rbind, M1.LS))
 M3.LS <- cbind(colnames(R), do.call(rbind, M3.LS))
 M4.LS <- cbind(colnames(R), do.call(rbind, M4.LS))
 M5.LS <- cbind(colnames(R), do.call(rbind, M5.LS))
-M1.LS
-M3.LS
-M4.LS
-M5.LS
+View(M1.LS)
+View(M3.LS)
+View(M4.LS)
+View(M5.LS)
