@@ -2,7 +2,7 @@
 
 # data
 source(paste("http://raw.githubusercontent.com/erkind/",
-             "eiv-coe/main/coe-data-eiv.R",
+             "eiv-coe/main/g-coe-data-eiv.R",
              sep = ""))
 dim(data); colnames(data)[c(1:5,60:64)]
 dim(R) ; colnames(R)
