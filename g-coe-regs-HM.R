@@ -459,8 +459,7 @@ for(i in 1:nb.port){
    colnames(M5.HM.res) <- colnames(R)
 }
 
-# # exports ---------------------------------------------------------------------
-# merge ind.names and output
+# collect results
 M1.HM <- cbind(colnames(R), do.call(rbind, M1.HM))
 M3.HM <- cbind(colnames(R), do.call(rbind, M3.HM))
 M4.HM <- cbind(colnames(R), do.call(rbind, M4.HM))
