@@ -1,4 +1,4 @@
-# OLS estimation of factor models for ind portfolios
+# OLS estimations
 
 # data
 source(paste("http://raw.githubusercontent.com/erkind/",
