@@ -2,7 +2,7 @@
 
 # data
 source(paste("http://raw.githubusercontent.com/erkind/",
-             "eiv-coe/main/g-coe-data-eiv.R",
+             "eiv-coe/main/coe-data-eiv.R",
              sep = ""))
 #
 # package
