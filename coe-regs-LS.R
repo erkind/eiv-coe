@@ -1,30 +1,25 @@
 # OLS estimation of factor models for ind portfolios
 
-# data ------------------------------------------------------------------------
-# loading from local drive
-source(paste("C:/Users/68596/Dropbox/eiv-coe/",
-             "scripts/data-eiv-coe.R",
+# data
+source(paste("http://raw.githubusercontent.com/erkind/",
+             "eiv-coe/main/coe-data-eiv.R",
              sep = ""))
-# # loading from GitHub
-# source(paste("http://raw.githubusercontent.com/erkind/",
-#              "eiv-coe/main/data-eiv-coe.R",
-#              sep = ""))
 dim(data); colnames(data)[c(1:5,60:64)]
 dim(R) ; colnames(R)
 dim(RF); colnames(RF)
 dim(X) ; colnames(X)
 
-# packages --------------------------------------------------------------------
+# packages
 library(car)
 library(lmtest)
 library(sandwich)
 library(skedastic)
 
-# counters --------------------------------------------------------------------
+# counters
 nb.obs <- as.numeric(dim(R)[1])
 nb.port<- as.numeric(dim(R)[2])
 
-# TS regs ---------------------------------------------------------------------
+# time-series regressions
 # 
 # CAPM
 M1.LS     <- list()
@@ -299,65 +294,7 @@ M1.LS <- cbind(colnames(R), do.call(rbind, M1.LS))
 M3.LS <- cbind(colnames(R), do.call(rbind, M3.LS))
 M4.LS <- cbind(colnames(R), do.call(rbind, M4.LS))
 M5.LS <- cbind(colnames(R), do.call(rbind, M5.LS))
-# export as csv
-my.path <- paste("C:/Users/68596/Dropbox/eiv-coe/",
-                 "scripts-output/", sep = "")
-write.csv(M1.LS,
-          file = paste(my.path,
-                       "LS-M1.csv",
-                       sep = ""), row.names = FALSE)
-write.csv(M3.LS,
-          file = paste(my.path,
-                       "LS-M3.csv",
-                       sep = ""), row.names = FALSE)
-write.csv(M4.LS,
-          file = paste(my.path,
-                       "LS-M4.csv",
-                       sep = ""), row.names = FALSE)
-write.csv(M5.LS,
-          file = paste(my.path,
-                       "LS-M5.csv",
-                       sep = ""), row.names = FALSE)
-
-# GRS -------------------------------------------------------------------------
-# call function
-source(paste("C:/Users/68596/Documents/docs/",
-             "projects/R-scripts/f-GRS.R",
-             sep = ""))
-# calculate GRS statistics
-GRS.table <- matrix(NA, nrow = 4, ncol = 2)
-GRS.M1 <- calculate.GRS(F.mat = X[,1],
-                        alphas = M1.LS.a,
-                        resids.mat = M1.LS.res)
-GRS.M3 <- calculate.GRS(F.mat = X[,1:3],
-                        alphas = M3.LS.a,
-                        resids.mat = M3.LS.res)
-GRS.M4 <- calculate.GRS(F.mat = X[,c(1:3,6)],
-                        alphas = M4.LS.a,
-                        resids.mat = M4.LS.res)
-GRS.M5 <- calculate.GRS(F.mat = X[,1:5],
-                        alphas = M5.LS.a,
-                        resids.mat = M5.LS.res)
-GRS.table <- matrix(
-   c(
-      cbind(GRS.M1$GRS, GRS.M3$GRS, GRS.M4$GRS, GRS.M5$GRS),
-      cbind(GRS.M1$p.value, GRS.M3$p.value, GRS.M4$p.value, GRS.M5$p.value)
-      ),
-   nrow = 4, ncol = 2, byrow = FALSE)
-rownames(GRS.table) <- c("M1", "M3", "M4", "M5")
-colnames(GRS.table) <- c("GRS.stat", "p.value")
-GRS.table
-# export csv
-my.path <- paste("C:/Users/68596/Dropbox/eiv-coe/",
-                 "scripts-output/", sep = "")
-write.csv(GRS.table,
-          file = paste(my.path,
-                       "GRS-test-LS.csv",
-                       sep = ""), row.names = FALSE)
-# extra code to check the GRS function
-library(GRS.test)
-GRS.2check <- GRS.test(ret.mat = R, factor.mat = F3)
-GRS.2check$GRS.stat
-GRS.2check$GRS.pval
-
-
+M1.LS
+M3.LS
+M4.LS
+M5.LS
