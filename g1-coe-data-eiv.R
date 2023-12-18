@@ -28,5 +28,3 @@ X <- as.matrix(data[c(t.start:t.end), c(51:55,61)],
                ncol = 6)
 #
 rm("t.start", "t.end")
-
-
