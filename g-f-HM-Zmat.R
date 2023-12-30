@@ -9,52 +9,72 @@ generate.Z.mat <- function(
       )
    {
    #
-   # # set the sample size and the number of predictors
-   # n <- dim(X.mat)[1]
-   # k <- dim(X.mat)[2]
+   # nb of cols in X.mat must be equal to k
+   if(k != dim(X.mat)[2]){
+      stop("The number of columns in X.mat must be equal to k.")
+   }
    #
-   # calculate X.mat in mean deviations form
+   # calculate Y.vec and X.mat in mean deviations form
+   y.vec <- apply(as.data.frame(Y.vec), 2, function(a){return(a - mean(a))})
    x.mat <- apply(as.data.frame(X.mat), 2, function(a){return(a - mean(a))})
    #
-   # calculate Y.mat in mean deviations form
-   y.mat <- apply(as.data.frame(Y.mat), 2, function(a){return(a - mean(a))})
-   #
-   # calculating higher-moments instruments
+   # calculate higher-moment instruments
+   # z0 = unit vector
    Z.mat <- rep(1, n, 1)
-   # Z.mat <- rep(1, n)
+   # z1
    if(is.element(1, i)){
       Z.mat <- cbind(Z.mat, x.mat * x.mat)
    }
+   # z2
    if(is.element(2, i)){
-      Z.mat <- cbind(Z.mat, x.mat * y.mat)
+      my.value <- matrix(0, nrow = n, ncol = ncol(x.mat))
+      for(j in 1:ncol(x.mat)){
+         my.value[,j] <- x.mat[,j] * y.vec
+      }
+      Z.mat <- cbind(Z.mat, my.value)
    }
+   # z3
    if((is.element(3, i))){
-      Z.mat <- cbind(Z.mat, y.mat * y.mat)
+      Z.mat <- cbind(Z.mat, y.vec * y.vec)
    }
+   # z4
    if((is.element(4, i))){
       part1 <- x.mat * x.mat * x.mat
       part2 <- 3 * x.mat %*% (mean((t(x.mat) %*% x.mat) / n) * diag(k))
       my.value <- part1 - part2
       Z.mat <- cbind(Z.mat, my.value)
    }
+   # z5
    if((is.element(5, i))){
-      part1 <- x.mat * x.mat * y.mat
-      part2 <- 2 * x.mat %*% (mean(t(x.mat) %*% y.mat) * diag(k))
-      part3 <- y.mat * sum(mean(t(x.mat) %*% x.mat / n) * diag(k))
+      part1 <- matrix(0, nrow = n, ncol = ncol(x.mat))
+      for(j in 1:ncol(x.mat)){
+         part1[,j] <- x.mat[,j] * x.mat[,j] * y.vec
+      }
+      part2 <- matrix(0, nrow = n, ncol = ncol(x.mat))
+      part2 <- 2 * x.mat %*% (mean(t(x.mat) %*% y.vec) * diag(ncol(x.mat)))
+      # part2 <- 2 * x.mat %*% (mean(t(x.mat) %*% y.vec) * diag(k))
+      part3 <- matrix(0, nrow = n, ncol = ncol(x.mat))
+      part3 <- y.vec %*% t(rep(1, ncol(x.mat))) %*%
+         (mean((t(x.mat) %*% x.mat) / n) * diag(k))
+      # part3 <- y.vec * sum(mean(t(x.mat) %*% x.mat / n) * diag(k))
       my.value <- part1 - part2 - part3
       Z.mat <- cbind(Z.mat, my.value)
    }
+   # z6
    if((is.element(6, i))){
-      part1 <- x.mat * y.mat * y.mat
-      part2 <- x.mat * mean((t(y.mat) %*% y.mat / n))
-      part3 <- 2 * y.mat * mean((t(y.mat) %*% x.mat / n))
+      part1 <- x.mat * y.vec * y.vec
+      part2 <- x.mat * mean((t(y.vec) %*% y.vec / n))
+      part3 <- 2 * y.vec * mean((t(y.vec) %*% x.mat / n))
       my.value <- part1 - part2 - part3
       Z.mat <- cbind(Z.mat, my.value)
    }
+   # z7
    if((is.element(7, i))){
-      my.value <- y.mat * y.mat * y.mat - 3 * y.mat * mean(t(y.mat) %*% y.mat / n)
+      my.value <- y.vec * y.vec * y.vec - 3 * y.vec * mean(t(y.vec) %*% y.vec / n)
       Z.mat <- cbind(Z.mat, my.value)
    }
+   #
+   # Z.mat column labels
    #
    # define valid ranges for i and j
    valid_i <- 1:7
@@ -68,18 +88,13 @@ generate.Z.mat <- function(
       stop("Invalid value for k.
            It should be an integer between 1 and 5.")
    }
-   # initialize an empty vector to store labels
+   #
+   # initialize empty vector
    labels <- c()
+   #
    # always include z0 in the labels vector
    labels <- c(labels, "z0")
-   # # loop through each value of i
-   # for (ii in i){
-   #    # loop through all numbers up to j for each value of i
-   #    for (kk in 1:k) {
-   #       # generate labels and concatenate to the labels vector
-   #       labels <- c(labels, paste0("z", ii, kk))
-   #    }
-   # }
+   #
    # if k is 1, add additional labels for 1:1 for each value of i
    if (k == 1){
       for (ii in i){
@@ -110,7 +125,10 @@ generate.Z.mat <- function(
          labels <- c(labels, paste0("z", ii, 1:5))
       }
    }
+   #
+   # rename Z.mat columns
    colnames(Z.mat) <- labels
+   #
    # return Z.mat
    return(Z.mat)
 }
