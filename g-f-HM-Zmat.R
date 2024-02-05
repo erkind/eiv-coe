@@ -6,8 +6,8 @@ generate.Z.mat <- function(
       n,            # sample size 
       k,            # nb of predictors
       i = c(1, 4)   # list of higher-moments
-      )
-   {
+)
+{
    #
    # nb of cols in X.mat must be equal to k
    if(k != dim(as.matrix(X.mat))[2]){
@@ -46,15 +46,18 @@ generate.Z.mat <- function(
    }
    # z5
    if((is.element(5, i))){
+      #
       part1 <- matrix(0, nrow = n, ncol = ncol(x.mat))
       for(j in 1:ncol(x.mat)){
          part1[,j] <- x.mat[,j] * x.mat[,j] * y.vec
       }
       part2 <- matrix(0, nrow = n, ncol = ncol(x.mat))
       part2 <- 2 * x.mat %*% (mean(t(x.mat) %*% y.vec) * diag(ncol(x.mat)))
+      # 
       part3 <- matrix(0, nrow = n, ncol = ncol(x.mat))
       part3 <- y.vec %*% t(rep(1, ncol(x.mat))) %*%
          (mean((t(x.mat) %*% x.mat) / n) * diag(k))
+      # 
       my.value <- part1 - part2 - part3
       Z.mat <- cbind(Z.mat, my.value)
    }
