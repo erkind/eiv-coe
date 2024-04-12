@@ -37,6 +37,6 @@ This function, generate.Z.mat, calculates the Z-matrix of higher-moments instrum
 
 The script implements the OLS and Higher-moments estimations of the regressions of industry portfolio excess returns on Fama-French risk factors. We consider for specification where 'M1' refers to the CAPM, 'M3' to Fama-French three-factor model, 'M4' to Fama-French and Carhart's four-factor model, and 'M5' to Fama-French five-factor model. For each specification, OLS and HM moments regressions are run using a 'for' loop and the output is collected in a separate data frame. HM estimations require the computation of the residuals of the regression of risk factors on the Z matrix of instruments. This is performed in the sections 'Z matrix' and 'regs F on Z'. Selected instruments include z0, z1 and z4 (technical details and discussion provided in the paper). HM regression output also includes the Durbin-Wu-Hausman test results to test the null of no errors-in-variables (EIV) as well as the test for overidentification restrictions. The section 'weak instruments' controls for the problem of weak instruments and reports the results for the F-statistic from the regression of each risk factor on instrumental variables following Stock and Yogo (2005) and Olea and Pflueger (2013). Finally, the section 'instrument exogeneity' controls for the presence of exogenous instruments. This is performed by checking the goodness-of-the-fit statistics of the regressions of the fitted HM regression residuals on each instrument set.
 
+# Contact
 
-
-
+For any questions or feedback, feel free to contact us at [erkin.d\@u-pec.fr](mailto:erkin.d@u-pec.fr){.email} or [marc.desban\@u-pec.fr](mailto:marc.desban@u-pec.fr){.email}.
