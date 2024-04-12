@@ -39,5 +39,6 @@ F.mat <- as.matrix(data[c(t.start:t.end), c(51:55,61)],
 dim(F.mat)
 colnames(F.mat)
 #
-# remove unnecessary objects
 rm("t.start", "t.end")
+
+
