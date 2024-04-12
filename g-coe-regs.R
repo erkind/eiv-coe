@@ -940,10 +940,10 @@ for(i in 1:length(ex.iv.M5)){
 # merge data frames 
 library(dplyr)
 # add column for model specification
-exo.test.M1 <- exo.test.M1 %>% mutate(Specification = "M1")
-exo.test.M3 <- exo.test.M3 %>% mutate(Specification = "M3")
-exo.test.M4 <- exo.test.M4 %>% mutate(Specification = "M4")
-exo.test.M5 <- exo.test.M5 %>% mutate(Specification = "M5")
+exo.test.M1 <- exo.test.M1 %>% mutate(Specification = "CAPM")
+exo.test.M3 <- exo.test.M3 %>% mutate(Specification = "FF3F")
+exo.test.M4 <- exo.test.M4 %>% mutate(Specification = "FFC4F")
+exo.test.M5 <- exo.test.M5 %>% mutate(Specification = "FF5F")
 exo.test <- bind_rows(exo.test.M1, exo.test.M3, exo.test.M4, exo.test.M5)
 #
 View(exo.test)
