@@ -31,7 +31,7 @@ This script begins by importing the 'g-coe-data-eiv.R' file into the session. It
 
 ## g-f-HM-Zmat.R
 
-This function, generate.Z.mat, calculates a Z-matrix of higher-moments instruments based on provided input variables. Developed by Erkin Diyarbakirlioglu, this function takes parameters such as the matrix of independent variables (X.mat), an optional vector of dependent variables (Y.vec), sample size (n), number of predictors (k), and a list of higher-moments (iv.list). It constructs the Z-matrix by computing various higher-moment instruments, such as quadratic and cubic terms, and combines them into the Z-matrix, which is then returned.
+This function, generate.Z.mat, calculates the Z-matrix of higher-moments instruments based on provided input variables. Developed by Erkin Diyarbakirlioglu, this function takes parameters such as the matrix of independent variables (X.mat), an optional vector of dependent variables (Y.vec), sample size (n), number of predictors (k), and a list of higher-moments (iv.list). It constructs the Z-matrix by computing various higher-moment instruments, such as quadratic and cubic terms, and combines them into the Z-matrix, which is then returned.
 
 ## g-coe-regs.R
 
