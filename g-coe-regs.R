@@ -303,8 +303,8 @@ View(M5.LS)
 
 # Z matrix --------------------------------------------------------------------
 # call function
-source(paste("C:/Users/68596/Dropbox/",
-             "R-scripts/f-HM-Zmat.R",
+source(paste("http://raw.githubusercontent.com/erkind/",
+             "eiv-coe/main/g-f-HM-Zmat.R",
              sep = ""))
 # instrument matrix
 Z.F1 <- generate.Z.mat(X.mat = F.mat[,1],
@@ -336,26 +336,30 @@ head(Z.F5, n = 3); dim(Z.F5)
 
 
 
+# regs F on Z -----------------------------------------------------------------
 #
-# regs X on Z
-# for each X[i] run X[i] ~ all Z's and save residuals
+# for each i, run regression of F.mat[,i] on all Z's and save residuals
+#
 # CAPM
-w.hat.X11 <- resid(lm(X[,1] ~ Z.X1))
+w.hat.F11 <- resid(lm(F.mat[,1] ~ Z.F1))
 # FF3F
-w.hat.X31 <- resid(lm(X[,1] ~ Z.X3))
-w.hat.X32 <- resid(lm(X[,2] ~ Z.X3))
-w.hat.X33 <- resid(lm(X[,3] ~ Z.X3))
+w.hat.F31 <- resid(lm(F.mat[,1] ~ Z.F3))
+w.hat.F32 <- resid(lm(F.mat[,2] ~ Z.F3))
+w.hat.F33 <- resid(lm(F.mat[,3] ~ Z.F3))
 # FFC4F
-w.hat.X41 <- resid(lm(X[,1] ~ Z.X4))
-w.hat.X42 <- resid(lm(X[,2] ~ Z.X4))
-w.hat.X43 <- resid(lm(X[,3] ~ Z.X4))
-w.hat.X44 <- resid(lm(X[,6] ~ Z.X4))
+w.hat.F41 <- resid(lm(F.mat[,1] ~ Z.F4))
+w.hat.F42 <- resid(lm(F.mat[,2] ~ Z.F4))
+w.hat.F43 <- resid(lm(F.mat[,3] ~ Z.F4))
+w.hat.F44 <- resid(lm(F.mat[,6] ~ Z.F4))
 # FF5F
-w.hat.X51 <- resid(lm(X[,1] ~ Z.X5))
-w.hat.X52 <- resid(lm(X[,2] ~ Z.X5))
-w.hat.X53 <- resid(lm(X[,3] ~ Z.X5))
-w.hat.X54 <- resid(lm(X[,4] ~ Z.X5))
-w.hat.X55 <- resid(lm(X[,5] ~ Z.X5))
+w.hat.F51 <- resid(lm(F.mat[,1] ~ Z.F5))
+w.hat.F52 <- resid(lm(F.mat[,2] ~ Z.F5))
+w.hat.F53 <- resid(lm(F.mat[,3] ~ Z.F5))
+w.hat.F54 <- resid(lm(F.mat[,4] ~ Z.F5))
+w.hat.F55 <- resid(lm(F.mat[,5] ~ Z.F5))
+
+
+
 #
 # time-series regressions
 #
