@@ -763,8 +763,8 @@ View(M5.HM)
 
 # weak instruments ------------------------------------------------------------
 #
-# run x[i] ~ Z.mat, check F-stat > 10 (Stock, Yogo, 2005) or F-stat > 24
-# (Olea, Pflueger, 2013) -> If yes, Z do not suffer from weak ins problem
+# run x[i] ~ Z.mat, check F-stat > 10 (Stock and Yogo, 2005) or F-stat > 24
+# (Olea and Pflueger, 2013) -> If yes, Z do not suffer from weak ins problem
 #
 # CAPM
 summary(lm(F.mat[,1] ~ Z.F1))$fstatistic
