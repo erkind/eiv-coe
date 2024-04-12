@@ -8,12 +8,12 @@ All scripts have been run on an RStudio 2022.02.3+492 Prairie Trillium Release u
 
 # REQUIRED PACKAGES
 
-- car
-- dplyr
-- fbasics
-- lmtest
-- sandwich
-- skedastic
+-   car
+-   dplyr
+-   fbasics
+-   lmtest
+-   sandwich
+-   skedastic
 
 # USAGE
 
@@ -36,4 +36,3 @@ This function, generate.Z.mat, calculates the Z-matrix of higher-moments instrum
 ## g-coe-regs.R
 
 Description follows...
-
