@@ -360,8 +360,7 @@ w.hat.F55 <- resid(lm(F.mat[,5] ~ Z.F5))
 
 
 
-#
-# time-series regressions
+# HM regs ---------------------------------------------------------------------
 #
 # CAPM
 M1.HM <- list()
@@ -370,7 +369,7 @@ M1.HM.a   <- matrix(NA, nrow = nb.port, ncol = 1)
 M1.HM.res <- matrix(NA, nrow = nb.obs, ncol = nb.port)
 for(i in 1:nb.port){
    # estimate HM regression
-   HM.fit <- lm(R[,i] ~ X[,1] + w.hat.X11)
+   HM.fit <- lm(R.mat[,i] ~ F.mat[,1] + w.hat.F11)
    names(HM.fit$coefficients) <- c("a", "b",
                                    "psi.b")
    # coefficient covariance matrix
@@ -386,8 +385,8 @@ for(i in 1:nb.port){
                        c("psi.b = 0"),
                        test = "Chisq",
                        white.adjust = c("hc0"))$`Pr(>Chisq)`[2])
-   OR <- nb.obs * summary(lm(resid(HM.fit) ~ Z.X1))$r.squared
-   OR.pval <- 1 - pchisq(q = OR, df = dim(Z.X1)[2] - 1)
+   OR <- nb.obs * summary(lm(resid(HM.fit) ~ Z.F1))$r.squared
+   OR.pval <- 1 - pchisq(q = OR, df = dim(Z.F1)[2] - 1)
    # extract summary values
    Rsq   <- summary(HM.fit)$adj.r.squared
    sigma <- summary(HM.fit)$sigma
@@ -401,15 +400,15 @@ for(i in 1:nb.port){
    psi.b.SE<- as.numeric(diag(HM.fit.VCV)[3])^0.5
    psi.b.t <- psi.b / psi.b.SE
    # excess returns time-series averages
-   avg.R <- mean(R[,i])
+   avg.R <- mean(R.mat[,i])
    # factors time-series average
-   avg.mkt <- mean(X[,1])
+   avg.mkt <- mean(F.mat[,1])
    # RF time-series average
    avg.RF  <- mean(RF)
    # coe (annualized)
    coe <- (avg.RF
            + b * avg.mkt
-           ) * 12
+   ) * 12
    # list to export the results
    out.list <- list(
       Rsq = Rsq,
@@ -430,10 +429,10 @@ for(i in 1:nb.port){
    M1.HM.VCV[[i]] <- vcovHAC(HM.fit)
    # intercepts
    M1.HM.a[i] <- a
-   rownames(M1.HM.a) <- colnames(R)
+   rownames(M1.HM.a) <- colnames(R.mat)
    # residuals
    M1.HM.res[,i] <- HM.fit$residuals
-   colnames(M1.HM.res) <- colnames(R)
+   colnames(M1.HM.res) <- colnames(R.mat)
 }
 #
 # FF3F
@@ -443,8 +442,8 @@ M3.HM.a   <- matrix(NA, nrow = nb.port, ncol = 1)
 M3.HM.res <- matrix(NA, nrow = nb.obs, ncol = nb.port)
 for(i in 1:nb.port){
    # estimate HM regression
-   HM.fit <- lm(R[,i] ~ X[,1] + X[,2] + X[,3] + 
-                        w.hat.X31 + w.hat.X32 + w.hat.X33)
+   HM.fit <- lm(R.mat[,i] ~ F.mat[,1] + F.mat[,2] + F.mat[,3] + 
+                   w.hat.F31 + w.hat.F32 + w.hat.F33)
    names(HM.fit$coefficients) <- c("a", "b", "s", "h",
                                    "psi.b", "psi.s", "psi.h")
    # coefficient covariance matrix
@@ -460,8 +459,8 @@ for(i in 1:nb.port){
                        c("psi.b = 0", "psi.s = 0", "psi.h = 0"),
                        test = "Chisq",
                        white.adjust = c("hc0"))$`Pr(>Chisq)`[2])
-   OR <- nb.obs * summary(lm(resid(HM.fit) ~ Z.X3))$r.squared
-   OR.pval <- 1 - pchisq(q = OR, df = dim(Z.X3)[2] - 1)
+   OR <- nb.obs * summary(lm(resid(HM.fit) ~ Z.F3))$r.squared
+   OR.pval <- 1 - pchisq(q = OR, df = dim(Z.F3)[2] - 1)
    # extract summary values
    Rsq   <- summary(HM.fit)$adj.r.squared
    sigma <- summary(HM.fit)$sigma
@@ -487,17 +486,17 @@ for(i in 1:nb.port){
    psi.h.SE<- as.numeric(diag(HM.fit.VCV)[7])^0.5
    psi.h.t <- psi.h / psi.h.SE
    # excess returns time-series averages
-   avg.R <- mean(R[,i])
+   avg.R <- mean(R.mat[,i])
    # factors time-series average
-   avg.mkt <- mean(X[,1])
-   avg.smb <- mean(X[,2])
-   avg.hml <- mean(X[,3])
+   avg.mkt <- mean(F.mat[,1])
+   avg.smb <- mean(F.mat[,2])
+   avg.hml <- mean(F.mat[,3])
    # RF time-series average
    avg.RF  <- mean(RF)
    # coe (annualized)
    coe <- (avg.RF
            + b * avg.mkt + s * avg.smb + h * avg.hml
-           ) * 12
+   ) * 12
    # list to export the results
    out.list <- list(
       Rsq = Rsq,
@@ -522,10 +521,10 @@ for(i in 1:nb.port){
    M3.HM.VCV[[i]] <- vcovHAC(HM.fit)
    # intercepts
    M3.HM.a[i] <- a
-   rownames(M3.HM.a) <- colnames(R)
+   rownames(M3.HM.a) <- colnames(R.mat)
    # residuals
    M3.HM.res[,i] <- HM.fit$residuals
-   colnames(M3.HM.res) <- colnames(R)
+   colnames(M3.HM.res) <- colnames(R.mat)
 }
 #
 # FFC4F
@@ -535,8 +534,8 @@ M4.HM.a   <- matrix(NA, nrow = nb.port, ncol = 1)
 M4.HM.res <- matrix(NA, nrow = nb.obs, ncol = nb.port)
 for(i in 1:nb.port){
    # estimate HM regression
-   HM.fit <- lm(R[,i] ~ X[,1] + X[,2] + X[,3] + X[,6] + 
-                        w.hat.X41 + w.hat.X42 + w.hat.X43 + w.hat.X44)
+   HM.fit <- lm(R.mat[,i] ~ F.mat[,1] + F.mat[,2] + F.mat[,3] + F.mat[,6] + 
+                   w.hat.F41 + w.hat.F42 + w.hat.F43 + w.hat.F44)
    names(HM.fit$coefficients) <- c("a", "b", "s", "h", "w",
                                    "psi.b", "psi.s", "psi.h", "psi.w")
    # coefficient covariance matrix
@@ -554,8 +553,8 @@ for(i in 1:nb.port){
                          "psi.w = 0"),
                        test = "Chisq",
                        white.adjust = c("hc0"))$`Pr(>Chisq)`[2])
-   OR <- nb.obs * summary(lm(resid(HM.fit) ~ Z.X4))$r.squared
-   OR.pval <- 1 - pchisq(q = OR, df = dim(Z.X4)[2] - 1)
+   OR <- nb.obs * summary(lm(resid(HM.fit) ~ Z.F4))$r.squared
+   OR.pval <- 1 - pchisq(q = OR, df = dim(Z.F4)[2] - 1)
    # extract summary values
    Rsq   <- summary(HM.fit)$adj.r.squared
    sigma <- summary(HM.fit)$sigma
@@ -587,19 +586,19 @@ for(i in 1:nb.port){
    psi.w.SE<- as.numeric(diag(HM.fit.VCV)[9])^0.5
    psi.w.t <- psi.w / psi.w.SE
    # excess returns time-series averages
-   avg.R <- mean(R[,i])
+   avg.R <- mean(R.mat[,i])
    # factors time-series average
-   avg.mkt <- mean(X[,1])
-   avg.smb <- mean(X[,2])
-   avg.hml <- mean(X[,3])
-   avg.wml <- mean(X[,6])
+   avg.mkt <- mean(F.mat[,1])
+   avg.smb <- mean(F.mat[,2])
+   avg.hml <- mean(F.mat[,3])
+   avg.wml <- mean(F.mat[,6])
    # RF time-series average
    avg.RF  <- mean(RF)
    # coe (annualized)
    coe <- (avg.RF
            + b * avg.mkt + s * avg.smb + h * avg.hml
            + w * avg.wml
-           ) * 12
+   ) * 12
    # list to export the results
    out.list <- list(
       Rsq = Rsq,
@@ -627,10 +626,10 @@ for(i in 1:nb.port){
    M4.HM.VCV[[i]] <- vcovHAC(HM.fit)
    # intercepts
    M4.HM.a[i] <- a
-   rownames(M4.HM.a) <- colnames(R)
+   rownames(M4.HM.a) <- colnames(R.mat)
    # residuals
    M4.HM.res[,i] <- HM.fit$residuals
-   colnames(M4.HM.res) <- colnames(R)
+   colnames(M4.HM.res) <- colnames(R.mat)
 }
 #
 # FF5F
@@ -640,9 +639,10 @@ M5.HM.a   <- matrix(NA, nrow = nb.port, ncol = 1)
 M5.HM.res <- matrix(NA, nrow = nb.obs, ncol = nb.port)
 for(i in 1:nb.port){
    # estimate HM regression
-   HM.fit <- lm(R[,i] ~ X[,1] + X[,2] + X[,3] + X[,4] + X[,5] +
-                        w.hat.X51 + w.hat.X52 + w.hat.X53 +
-                        w.hat.X54 + w.hat.X55)
+   HM.fit <- lm(R.mat[,i] ~ F.mat[,1] + F.mat[,2] + F.mat[,3] +
+                   F.mat[,4] + F.mat[,5] +
+                   w.hat.F51 + w.hat.F52 + w.hat.F53 +
+                   w.hat.F54 + w.hat.F55)
    names(HM.fit$coefficients) <- c("a", "b", "s", "h", "r", "c",
                                    "psi.b", "psi.s", "psi.h",
                                    "psi.r", "psi.c")
@@ -661,8 +661,8 @@ for(i in 1:nb.port){
                          "psi.r = 0", "psi.c = 0"),
                        test = "Chisq",
                        white.adjust = c("hc0"))$`Pr(>Chisq)`[2])
-   OR <- nb.obs * summary(lm(resid(HM.fit) ~ Z.X5))$r.squared
-   OR.pval <- 1 - pchisq(q = OR, df = dim(Z.X5)[2] - 1)
+   OR <- nb.obs * summary(lm(resid(HM.fit) ~ Z.F5))$r.squared
+   OR.pval <- 1 - pchisq(q = OR, df = dim(Z.F5)[2] - 1)
    # extract summary values
    Rsq   <- summary(HM.fit)$adj.r.squared
    sigma <- summary(HM.fit)$sigma
@@ -700,20 +700,20 @@ for(i in 1:nb.port){
    psi.c.SE<- as.numeric(diag(HM.fit.VCV)[11])^0.5
    psi.c.t <- psi.c / psi.c.SE
    # excess returns time-series averages
-   avg.R <- mean(R[,i])
+   avg.R <- mean(R.mat[,i])
    # factors time-series average
-   avg.mkt <- mean(X[,1])
-   avg.smb <- mean(X[,2])
-   avg.hml <- mean(X[,3])
-   avg.rmw <- mean(X[,4])
-   avg.cma <- mean(X[,5])
+   avg.mkt <- mean(F.mat[,1])
+   avg.smb <- mean(F.mat[,2])
+   avg.hml <- mean(F.mat[,3])
+   avg.rmw <- mean(F.mat[,4])
+   avg.cma <- mean(F.mat[,5])
    # RF time-series average
    avg.RF  <- mean(RF)
    # coe (annualized)
    coe <- (avg.RF
            + b * avg.mkt + s * avg.smb + h * avg.hml
            + r * avg.rmw + c * avg.cma
-           ) * 12
+   ) * 12
    # list to export the results
    out.list <- list(
       Rsq = Rsq,
@@ -743,106 +743,114 @@ for(i in 1:nb.port){
    M5.HM.VCV[[i]] <- vcovHAC(HM.fit)
    # intercepts
    M5.HM.a[i] <- a
-   rownames(M5.HM.a) <- colnames(R)
+   rownames(M5.HM.a) <- colnames(R.mat)
    # residuals
    M5.HM.res[,i] <- HM.fit$residuals
-   colnames(M5.HM.res) <- colnames(R)
+   colnames(M5.HM.res) <- colnames(R.mat)
 }
 #
-# collect output
-M1.HM <- cbind(colnames(R), do.call(rbind, M1.HM))
-M3.HM <- cbind(colnames(R), do.call(rbind, M3.HM))
-M4.HM <- cbind(colnames(R), do.call(rbind, M4.HM))
-M5.HM <- cbind(colnames(R), do.call(rbind, M5.HM))
-# 
-# visualize output
+# merge portfolio labels and regression output
+M1.HM <- cbind(colnames(R.mat), do.call(rbind, M1.HM))
+M3.HM <- cbind(colnames(R.mat), do.call(rbind, M3.HM))
+M4.HM <- cbind(colnames(R.mat), do.call(rbind, M4.HM))
+M5.HM <- cbind(colnames(R.mat), do.call(rbind, M5.HM))
 View(M1.HM)
 View(M3.HM)
 View(M4.HM)
 View(M5.HM)
+
+
+
+# weak instruments ------------------------------------------------------------
 #
-# testing for weak instruments
 # run x[i] ~ Z.mat, check F-stat > 10 (Stock, Yogo, 2005) or F-stat > 24
 # (Olea, Pflueger, 2013) -> If yes, Z do not suffer from weak ins problem
+#
 # CAPM
-summary(lm(X[,1] ~ Z.X1))$fstatistic
+summary(lm(F.mat[,1] ~ Z.F1))$fstatistic
 # FF3F
-summary(lm(X[,1] ~ Z.X3))$fstatistic
-summary(lm(X[,2] ~ Z.X3))$fstatistic
-summary(lm(X[,3] ~ Z.X3))$fstatistic
+summary(lm(F.mat[,1] ~ Z.F3))$fstatistic
+summary(lm(F.mat[,2] ~ Z.F3))$fstatistic
+summary(lm(F.mat[,3] ~ Z.F3))$fstatistic
 # FFC4F
-summary(lm(X[,1] ~ Z.X4))$fstatistic
-summary(lm(X[,2] ~ Z.X4))$fstatistic
-summary(lm(X[,3] ~ Z.X4))$fstatistic
-summary(lm(X[,4] ~ Z.X4))$fstatistic
+summary(lm(F.mat[,1] ~ Z.F4))$fstatistic
+summary(lm(F.mat[,2] ~ Z.F4))$fstatistic
+summary(lm(F.mat[,3] ~ Z.F4))$fstatistic
+summary(lm(F.mat[,4] ~ Z.F4))$fstatistic
 # FF5F
-summary(lm(X[,1] ~ Z.X5))$fstatistic
-summary(lm(X[,2] ~ Z.X5))$fstatistic
-summary(lm(X[,3] ~ Z.X5))$fstatistic
-summary(lm(X[,4] ~ Z.X5))$fstatistic
-summary(lm(X[,5] ~ Z.X5))$fstatistic
+summary(lm(F.mat[,1] ~ Z.F5))$fstatistic
+summary(lm(F.mat[,2] ~ Z.F5))$fstatistic
+summary(lm(F.mat[,3] ~ Z.F5))$fstatistic
+summary(lm(F.mat[,4] ~ Z.F5))$fstatistic
+summary(lm(F.mat[,5] ~ Z.F5))$fstatistic
+
+
+
+# instrument exogeneity -------------------------------------------------------
 #
 # testing for exogenous instruments
+# suppose the model
+# y = a + B*X + G*Z + e
+# where Z is the instrument set. get fitted residuals and run
+# e = z[0] + theta[1] * z[1] + ... + theta[k] * z[k] + u
+# assess the goodness-of-the-fit statistics: there should no explanatory
+# power of instruments on IV residuals.
+#
 # CAPM
-ex.iv.M1 <- lapply(1:dim(R)[2],
+ex.iv.M1 <- lapply(1:dim(R.mat)[2],
                    function(i)
-                      lm(R[,i] ~ X[,1] +
-                                 w.hat.X11
-                         )
-                   )
-ex.iv.M1 <- lapply(1:dim(R)[2],
+                      lm(R.mat[,i] ~ F.mat[,1] +
+                            w.hat.F11
+                      )
+)
+ex.iv.M1 <- lapply(1:dim(R.mat)[2],
                    function(i)
-                      lm(ex.iv.M1[[i]]$resid ~ -1 + Z.X1
-                         )
-                   )
+                      lm(ex.iv.M1[[i]]$resid ~ -1 + Z.F1
+                      )
+)
 ex.iv.M1 <- lapply(ex.iv.M1, summary)
 # FF3F
-ex.iv.M3 <- lapply(1:dim(R)[2],
+ex.iv.M3 <- lapply(1:dim(R.mat)[2],
                    function(i)
-                      lm(R[,i] ~ X[,1] + X[,2] + X[,3] + 
-                                 w.hat.X31 +
-                                 w.hat.X32 +
-                                 w.hat.X33
-                         )
-                   )
-ex.iv.M3 <- lapply(1:dim(R)[2],
+                      lm(R.mat[,i] ~ F.mat[,1] + F.mat[,2] + F.mat[,3] + 
+                            w.hat.F31 + w.hat.F32 + w.hat.F33
+                      )
+)
+ex.iv.M3 <- lapply(1:dim(R.mat)[2],
                    function(i)
-                      lm(ex.iv.M3[[i]]$resid ~ -1 + Z.X3
-                         )
-                   )
+                      lm(ex.iv.M3[[i]]$resid ~ -1 + Z.F3
+                      )
+)
 ex.iv.M3 <- lapply(ex.iv.M3, summary)
 # FFC4F
-ex.iv.M4 <- lapply(1:dim(R)[2],
+ex.iv.M4 <- lapply(1:dim(R.mat)[2],
                    function(i)
-                      lm(R[,i] ~ X[,1] + X[,2] + X[,3] + X[,6] + 
-                            w.hat.X41 +
-                            w.hat.X42 +
-                            w.hat.X43 +
-                            w.hat.X44
-                         )
-                   )
-ex.iv.M4 <- lapply(1:dim(R)[2],
+                      lm(R.mat[,i] ~ F.mat[,1] + F.mat[,2] + F.mat[,3] +
+                            F.mat[,6] + 
+                            w.hat.F41 + w.hat.F42 +
+                            w.hat.F43 + w.hat.F44
+                      )
+)
+ex.iv.M4 <- lapply(1:dim(R.mat)[2],
                    function(i)
-                      lm(ex.iv.M4[[i]]$resid ~ -1 + Z.X4
-                         )
-                   )
+                      lm(ex.iv.M4[[i]]$resid ~ -1 + Z.F4
+                      )
+)
 ex.iv.M4 <- lapply(ex.iv.M4, summary)
 # FF5F
-ex.iv.M5 <- lapply(1:dim(R)[2],
+ex.iv.M5 <- lapply(1:dim(R.mat)[2],
                    function(i)
-                      lm(R[,i] ~ X[,1] + X[,2] + X[,3] + X[,4] + X[,5] +
-                            w.hat.X51 +
-                            w.hat.X52 +
-                            w.hat.X53 +
-                            w.hat.X54 +
-                            w.hat.X55
-                         )
-                   )
-ex.iv.M5 <- lapply(1:dim(R)[2],
+                      lm(R.mat[,i] ~ F.mat[,1] + F.mat[,2] + F.mat[,3] +
+                            F.mat[,4] + F.mat[,5] +
+                            w.hat.F51 + w.hat.F52 + w.hat.F53 +
+                            w.hat.F54 + w.hat.F55
+                      )
+)
+ex.iv.M5 <- lapply(1:dim(R.mat)[2],
                    function(i)
-                      lm(ex.iv.M5[[i]]$resid ~ -1 + Z.X5
-                         )
-                   )
+                      lm(ex.iv.M5[[i]]$resid ~ -1 + Z.F5
+                      )
+)
 ex.iv.M5 <- lapply(ex.iv.M5, summary)
 # generate data frames
 exo.test.M1 <- data.frame(
@@ -850,10 +858,10 @@ exo.test.M1 <- data.frame(
    R.sq     = numeric(0),
    F.stat   = numeric(0),
    avg.p.val= numeric(0)
-   )
+)
 for(i in 1:length(ex.iv.M1)){
    model.summary <- ex.iv.M1[[i]]
-   industry      <- colnames(R)[i]
+   industry      <- colnames(R.mat)[i]
    R.sq          <- model.summary$r.squared
    F.stat        <- model.summary$fstatistic[1]
    avg.p.val     <- mean(model.summary$coefficients[,4])
@@ -864,7 +872,7 @@ for(i in 1:length(ex.iv.M1)){
                            R.sq     = R.sq,
                            F.stat   = F.stat,
                            avg.p.val= avg.p.val)
-                        )
+   )
 }
 exo.test.M3 <- data.frame(
    industry = character(0),
@@ -874,7 +882,7 @@ exo.test.M3 <- data.frame(
 )
 for(i in 1:length(ex.iv.M3)){
    model.summary <- ex.iv.M3[[i]]
-   industry      <- colnames(R)[i]
+   industry      <- colnames(R.mat)[i]
    R.sq          <- model.summary$r.squared
    F.stat        <- model.summary$fstatistic[1]
    avg.p.val     <- mean(model.summary$coefficients[,4])
@@ -895,7 +903,7 @@ exo.test.M4 <- data.frame(
 )
 for(i in 1:length(ex.iv.M4)){
    model.summary <- ex.iv.M4[[i]]
-   industry      <- colnames(R)[i]
+   industry      <- colnames(R.mat)[i]
    R.sq          <- model.summary$r.squared
    F.stat        <- model.summary$fstatistic[1]
    avg.p.val     <- mean(model.summary$coefficients[,4])
@@ -916,7 +924,7 @@ exo.test.M5 <- data.frame(
 )
 for(i in 1:length(ex.iv.M5)){
    model.summary <- ex.iv.M5[[i]]
-   industry      <- colnames(R)[i]
+   industry      <- colnames(R.mat)[i]
    R.sq          <- model.summary$r.squared
    F.stat        <- model.summary$fstatistic[1]
    avg.p.val     <- mean(model.summary$coefficients[,4])
@@ -939,6 +947,5 @@ exo.test.M5 <- exo.test.M5 %>% mutate(Specification = "M5")
 exo.test <- bind_rows(exo.test.M1, exo.test.M3, exo.test.M4, exo.test.M5)
 #
 View(exo.test)
-
 
 
