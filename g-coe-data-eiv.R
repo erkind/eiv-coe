@@ -24,19 +24,20 @@ colnames(RF) <- c("RF")
 dim(RF)
 colnames(RF)
 #
-# matrix of excess returns on industry portfolios
-R <- as.matrix(data[c(t.start:t.end),2:45], # exclude financials
-               nrow = t.end - t.start + 1,
-               ncol = 44)
-R <- R - data[c(t.start:t.end), 56] # subtract RF
-dim(R)
-colnames(R)
+# matrix of industry portfolio excess returns
+R.mat <- as.matrix(data[c(t.start:t.end),2:45],
+                   nrow = t.end - t.start + 1,
+                   ncol = 44)
+R.mat <- R.mat - data[c(t.start:t.end), 56]
+dim(R.mat)
+colnames(R.mat)
 #
 # matrix of risk factors
-X <- as.matrix(data[c(t.start:t.end), c(51:55,61)],
-               nrow = t.end - t.start + 1,
-               ncol = 6)
-dim(X); colnames(X)
+F.mat <- as.matrix(data[c(t.start:t.end), c(51:55,61)],
+                   nrow = t.end - t.start + 1,
+                   ncol = 6)
+dim(F.mat)
+colnames(F.mat)
 #
 # remove unnecessary objects
 rm("t.start", "t.end")
