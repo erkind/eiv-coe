@@ -1,15 +1,15 @@
 # descriptive statistics
 #
-# loading data
+# call data file
 source(paste("http://raw.githubusercontent.com/erkind/",
              "eiv-coe/main/g-coe-data-eiv.R",
              sep = ""))
 #
-# package
+# required
 library(fBasics)
 #
-# summary stats for Y variables
-descstats.Y <- data.frame(
+# summary stats for ind portfolios ex returns
+descstats.R <- data.frame(
    series = character(0),
    nb.obs = numeric(0),
    min.val = numeric(0),
@@ -51,8 +51,8 @@ for(i in 1:length(colnames(R))){
    sw.stat = as.numeric(normalTest(R[,i], method = c("sw"))@test$statistic)
    sw.pval = as.numeric(normalTest(R[,i], method = c("sw"))@test$p.value)
    # append results
-   descstats.Y <- rbind(
-      descstats.Y,
+   descstats.R <- rbind(
+      descstats.R,
       data.frame(
          series  = industry,
          nb.obs  = nb.obs,
@@ -77,7 +77,7 @@ for(i in 1:length(colnames(R))){
    )
 }
 #
-# summary stats for X variables
+# summary stats for risk factors
 descstats.X <- data.frame(
    series = character(0),
    nb.obs = numeric(0),
@@ -147,5 +147,5 @@ for(i in 1:length(colnames(X))){
 }
 #
 # output
-View(descstats.Y)
+View(descstats.R)
 View(descstats.X)
