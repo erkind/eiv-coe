@@ -10,7 +10,7 @@ All scripts have been run on an RStudio 2022.02.3+492 Prairie Trillium Release u
 
 -   car
 -   dplyr
--   fbasics
+-   fBasics
 -   lmtest
 -   sandwich
 -   skedastic
@@ -23,7 +23,7 @@ This is the csv data file used in the paper.
 
 ## g-coe-data-eiv.R
 
-The script loads the raw data uploaded on the same repository as a csv file. It defines a subsample as used in the paper. It assigns the variable 'R' to represent the matrix of industry portfolio excess returns over the risk-free rate, and 'X' to denote the matrix of systematic risk factors.
+The script loads the raw data uploaded on the same repository as a csv file. It defines a subsample as used in the paper. It assigns the variable 'R.mat' to represent the matrix of industry portfolio excess returns over the risk-free rate, and 'F.mat' to denote the matrix of systematic risk factors.
 
 ## g-coe-descStats.R
 
