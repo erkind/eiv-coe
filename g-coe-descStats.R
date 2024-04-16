@@ -9,7 +9,7 @@ source(paste("http://raw.githubusercontent.com/erkind/",
 library(fBasics)
 #
 # summary stats for ind portfolios ex returns
-descstats.R <- data.frame(
+descstats.R.mat <- data.frame(
    series = character(0),
    nb.obs = numeric(0),
    min.val = numeric(0),
@@ -23,36 +23,36 @@ descstats.R <- data.frame(
    jb.stat = numeric(0), jb.pval = numeric(0),
    sw.stat = numeric(0), sw.pval = numeric(0)
    )
-for(i in 1:length(colnames(R))){
+for(i in 1:length(colnames(R.mat))){
    # labels
-   industry= colnames(R)[i]
+   industry= colnames(R.mat)[i]
    # descriptive stats
-   nb.obs  = as.numeric(length(R[,i]))
+   nb.obs  = as.numeric(length(R.mat[,i]))
    min.val = min(R[,i])
-   min.val = as.numeric(quantile(R[,i])[1])
-   Q1.val  = as.numeric(quantile(R[,i])[2])
-   Q2.val  = as.numeric(quantile(R[,i])[3])
-   Q3.val  = as.numeric(quantile(R[,i])[4])
-   max.val = as.numeric(quantile(R[,i])[5])
-   avg.val = mean(R[,i])
-   st.dev  = sd(R[,i])
-   sk      = skewness(R[,i])
+   min.val = as.numeric(quantile(R.mat[,i])[1])
+   Q1.val  = as.numeric(quantile(R.mat[,i])[2])
+   Q2.val  = as.numeric(quantile(R.mat[,i])[3])
+   Q3.val  = as.numeric(quantile(R.mat[,i])[4])
+   max.val = as.numeric(quantile(R.mat[,i])[5])
+   avg.val = mean(R.mat[,i])
+   st.dev  = sd(R.mat[,i])
+   sk      = skewness(R.mat[,i])
    t.sk    = sk / sqrt(6 / nb.obs)
-   kurt    = kurtosis(R[,i])
+   kurt    = kurtosis(R.mat[,i])
    t.kurt  = kurt / sqrt(24 / nb.obs)
    ks.stat = as.numeric(
-      ks.test(R[,i], "pnorm", mean(R[,i]), sd = sd(R[,i]),
+      ks.test(R.mat[,i], "pnorm", mean(R.mat[,i]), sd = sd(R.mat[,i]),
               alternative = c("two.sided"))$statistic)
    ks.pval = as.numeric(
-      ks.test(R[,i], "pnorm", mean(R[,i]), sd = sd(R[,i]),
+      ks.test(R.mat[,i], "pnorm", mean(R.mat[,i]), sd = sd(R.mat[,i]),
               alternative = c("two.sided"))$p.value)
-   jb.stat = as.numeric(jarqueberaTest(R[,i])@test$statistic)
-   jb.pval = as.numeric(jarqueberaTest(R[,i])@test$p.value)
-   sw.stat = as.numeric(normalTest(R[,i], method = c("sw"))@test$statistic)
-   sw.pval = as.numeric(normalTest(R[,i], method = c("sw"))@test$p.value)
+   jb.stat = as.numeric(jarqueberaTest(R.mat[,i])@test$statistic)
+   jb.pval = as.numeric(jarqueberaTest(R.mat[,i])@test$p.value)
+   sw.stat = as.numeric(normalTest(R.mat[,i], method = c("sw"))@test$statistic)
+   sw.pval = as.numeric(normalTest(R.mat[,i], method = c("sw"))@test$p.value)
    # append results
-   descstats.R <- rbind(
-      descstats.R,
+   descstats.R.mat <- rbind(
+      descstats.R.mat,
       data.frame(
          series  = industry,
          nb.obs  = nb.obs,
@@ -78,7 +78,7 @@ for(i in 1:length(colnames(R))){
 }
 #
 # summary stats for risk factors
-descstats.X <- data.frame(
+descstats.F.mat <- data.frame(
    series = character(0),
    nb.obs = numeric(0),
    min.val = numeric(0),
@@ -92,36 +92,36 @@ descstats.X <- data.frame(
    jb.stat = numeric(0), jb.pval = numeric(0),
    sw.stat = numeric(0), sw.pval = numeric(0)
 )
-for(i in 1:length(colnames(X))){
+for(i in 1:length(colnames(F.mat))){
    # labels
-   factor  = colnames(X)[i]
+   factor  = colnames(F.mat)[i]
    # descriptive stats
-   nb.obs  = as.numeric(length(X[,i]))
-   min.val = min(X[,i])
-   min.val = as.numeric(quantile(X[,i])[1])
-   Q1.val  = as.numeric(quantile(X[,i])[2])
-   Q2.val  = as.numeric(quantile(X[,i])[3])
-   Q3.val  = as.numeric(quantile(X[,i])[4])
-   max.val = as.numeric(quantile(X[,i])[5])
-   avg.val = mean(X[,i])
-   st.dev  = sd(X[,i])
-   sk      = skewness(X[,i])
+   nb.obs  = as.numeric(length(F.mat[,i]))
+   min.val = min(F.mat[,i])
+   min.val = as.numeric(quantile(F.mat[,i])[1])
+   Q1.val  = as.numeric(quantile(F.mat[,i])[2])
+   Q2.val  = as.numeric(quantile(F.mat[,i])[3])
+   Q3.val  = as.numeric(quantile(F.mat[,i])[4])
+   max.val = as.numeric(quantile(F.mat[,i])[5])
+   avg.val = mean(F.mat[,i])
+   st.dev  = sd(F.mat[,i])
+   sk      = skewness(F.mat[,i])
    t.sk    = sk / sqrt(6 / nb.obs)
-   kurt    = kurtosis(X[,i])
+   kurt    = kurtosis(F.mat[,i])
    t.kurt  = kurt / sqrt(24 / nb.obs)
    ks.stat = as.numeric(
-      ks.test(X[,i], "pnorm", mean(X[,i]), sd = sd(X[,i]),
+      ks.test(F.mat[,i], "pnorm", mean(F.mat[,i]), sd = sd(F.mat[,i]),
               alternative = c("two.sided"))$statistic)
    ks.pval = as.numeric(
-      ks.test(X[,i], "pnorm", mean(X[,i]), sd = sd(X[,i]),
+      ks.test(F.mat[,i], "pnorm", mean(F.mat[,i]), sd = sd(F.mat[,i]),
               alternative = c("two.sided"))$p.value)
-   jb.stat = as.numeric(jarqueberaTest(X[,i])@test$statistic)
-   jb.pval = as.numeric(jarqueberaTest(X[,i])@test$p.value)
-   sw.stat = as.numeric(normalTest(X[,i], method = c("sw"))@test$statistic)
-   sw.pval = as.numeric(normalTest(X[,i], method = c("sw"))@test$p.value)
+   jb.stat = as.numeric(jarqueberaTest(F.mat[,i])@test$statistic)
+   jb.pval = as.numeric(jarqueberaTest(F.mat[,i])@test$p.value)
+   sw.stat = as.numeric(normalTest(F.mat[,i], method = c("sw"))@test$statistic)
+   sw.pval = as.numeric(normalTest(F.mat[,i], method = c("sw"))@test$p.value)
    # append results
-   descstats.X <- rbind(
-      descstats.X,
+   descstats.F.mat <- rbind(
+      descstats.F.mat,
       data.frame(
          series  = factor,
          nb.obs  = nb.obs,
@@ -147,5 +147,5 @@ for(i in 1:length(colnames(X))){
 }
 #
 # output
-View(descstats.R)
-View(descstats.X)
+View(descstats.R.mat)
+View(descstats.F.mat)
