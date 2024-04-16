@@ -21,7 +21,7 @@ Below we describe each file we employed in the paper. Some of them are optional 
 
 ## data-eiv-coe.csv (optional)
 
-This is the csv data file used in the paper. The user does not need to load this file, it is automatically loaded in the next script. Raw data on industry portfolios as well as systematic risk factors have been obtained from Kenneth F. French online library at [http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html](http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html){.link2FrenchLibrary}
+This is the csv data file used in the paper. The user does not need to load this file, it is automatically loaded in the next script. Raw data on industry portfolios as well as systematic risk factors have been obtained from Kenneth F. French [online library](http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html).
 
 ## g-coe-data-eiv.R (optional)
 
