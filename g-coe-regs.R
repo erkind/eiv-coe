@@ -9,6 +9,7 @@ source(paste("http://raw.githubusercontent.com/erkind/",
 #
 # packages
 library(car)
+library(fBasics)
 library(lmtest)
 library(sandwich)
 library(skedastic)
