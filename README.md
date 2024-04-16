@@ -17,19 +17,25 @@ All scripts have been run on an RStudio 2022.02.3+492 Prairie Trillium Release u
 
 # USAGE
 
-## data-eiv-coe.csv
+Below we describe each file we employed in the paper. Some of them are optional and the user needs not to run the codes within to obtain the results.
 
-This is the csv data file used in the paper.
+## data-eiv-coe.csv (optional)
 
-## g-coe-data-eiv.R
+This is the csv data file used in the paper. The user does not need to load this file, it is automatically loaded in the next script.
 
-The script loads the raw data uploaded on the same repository as a csv file. It defines a subsample as used in the paper. It assigns the variable 'R.mat' to represent the matrix of industry portfolio excess returns over the risk-free rate, and 'F.mat' to denote the matrix of systematic risk factors.
+## g-coe-data-eiv.R (optional)
+
+The script is optional to the user. Its function is to load the raw data uploaded on the same repository as a csv file, then defines a subsample that is used in the paper. It assigns the variable 'R.mat' to represent the matrix of industry portfolio excess returns over the risk-free rate, and 'F.mat' to denote the matrix of systematic risk factors.
 
 ## g-coe-descStats.R
 
-This script begins by importing the 'g-coe-data-eiv.R' file into the session. It then computes various summary statistics and performs normality tests on both dependent and independent variables. The resulting outcomes are stored in two distinct data frames, which can be exported as CSV files using commonly available R methods.
+The user can open this script in a new R session.
 
-## g-f-HM-Zmat.R
+The script begins by importing the data by loading the previous script 'g-coe-data-eiv.R'. It computes various summary statistics and performs normality tests on both dependent and independent variables. The resulting outcomes are stored in two distinct data frames, which can be exported as CSV files using commonly available R methods.
+
+## g-f-HM-Zmat.R (optional)
+
+This script is optional to the user.
 
 This function, generate.Z.mat, calculates the Z-matrix of higher-moments instruments based on provided input variables. This function takes parameters such as the matrix of independent variables (X.mat), an optional vector of dependent variables (Y.vec), sample size (n), number of predictors (k), and a list of higher-moments (iv.list). It constructs the Z-matrix by computing various higher-moment instruments, such as quadratic and cubic terms, and combines them into the Z-matrix, which is then returned.
 
