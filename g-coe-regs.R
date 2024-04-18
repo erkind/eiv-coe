@@ -15,8 +15,8 @@ library(sandwich)
 library(skedastic)
 #
 # (required) counters
-nb.obs <- as.numeric(dim(R)[1])
-nb.port<- as.numeric(dim(R)[2])
+nb.obs <- as.numeric(dim(R.mat)[1])
+nb.port<- as.numeric(dim(R.mat)[2])
 
 
 
